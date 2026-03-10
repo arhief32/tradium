@@ -1,18 +1,24 @@
 package main
 
 import (
-	"log"
-	"time"
+	"fmt"
+	"net/http"
+	"os"
 )
 
+func handler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Hello from Golang on Render 🚀")
+}
+
 func main() {
-	for {
-		log.Println("Checking market...")
 
-		// ambil data market
-		// hitung indikator
-		// kirim signal
-
-		time.Sleep(30 * time.Second)
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
 	}
+
+	http.HandleFunc("/", handler)
+
+	fmt.Println("Server running on port", port)
+	http.ListenAndServe(":"+port, nil)
 }
